@@ -6,6 +6,7 @@
     <title>Trevlig Mjukvara - Podden om fri mjukvara</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Sulphur+Point:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -70,11 +71,24 @@
         }
 
         .hero-tagline {
-            font-size: 2rem;
-            font-weight: 300;
+            font-size: 2.5rem;
+            font-weight: 400;
             margin-bottom: 3rem;
             opacity: 0.9;
             line-height: 1.4;
+            font-family: 'VT323', monospace;
+            color: #7af5ee;
+            text-shadow: 0 0 10px rgba(122, 245, 238, 0.5);
+        }
+
+        .hero-tagline::after {
+            content: '|';
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
         }
 
         .cta-button {
@@ -325,7 +339,7 @@
             <div class="hero-content">
                 <div class="logo-section">
                     <img src="logo.avif" alt="Trevlig Mjukvara" class="logo-image">
-                    <p class="hero-tagline">Podden som tar dig djupare in i världen av fri mjukvara och öppen källkod</p>
+                    <p class="hero-tagline" id="tagline">Podden om </p>
                 </div>
 
                 <div class="player-section">
@@ -387,5 +401,51 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        const phrases = [
+            'fri mjukvara och öppen källkod',
+            'Linux',
+            'privacy',
+            'teknologi som respekterar dig',
+            'det fria internet',
+            'open source-communityn',
+            'digital integritet'
+        ];
+
+        const tagline = document.getElementById('tagline');
+        const baseText = 'Podden om ';
+        let phraseIndex = 0;
+
+        function randomDelay(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        async function typeText(text) {
+            for (let char of text) {
+                tagline.textContent = tagline.textContent.slice(0, -1) + char + '|';
+                await new Promise(resolve => setTimeout(resolve, randomDelay(50, 150)));
+            }
+        }
+
+        async function backspaceText(length) {
+            for (let i = 0; i < length; i++) {
+                tagline.textContent = tagline.textContent.slice(0, -2) + '|';
+                await new Promise(resolve => setTimeout(resolve, randomDelay(30, 80)));
+            }
+        }
+
+        async function animateTagline() {
+            while (true) {
+                const currentPhrase = phrases[phraseIndex];
+                await typeText(currentPhrase);
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                await backspaceText(currentPhrase.length);
+                phraseIndex = (phraseIndex + 1) % phrases.length;
+            }
+        }
+
+        animateTagline();
+    </script>
 </body>
 </html>
