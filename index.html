@@ -423,14 +423,14 @@
 
         async function typeText(text) {
             for (let char of text) {
-                tagline.textContent = tagline.textContent.slice(0, -1) + char + '|';
+                tagline.textContent = tagline.textContent + char;
                 await new Promise(resolve => setTimeout(resolve, randomDelay(50, 150)));
             }
         }
 
         async function backspaceText(length) {
             for (let i = 0; i < length; i++) {
-                tagline.textContent = tagline.textContent.slice(0, -2) + '|';
+                tagline.textContent = tagline.textContent.slice(0, -1);
                 await new Promise(resolve => setTimeout(resolve, randomDelay(30, 80)));
             }
         }
