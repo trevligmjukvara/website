@@ -491,16 +491,36 @@
         }
 
         async function typeText(text) {
-            for (let char of text) {
+            const wrongChars = 'abcdefghijklmnopqrstuvwxyzåäö';
+
+            for (let i = 0; i < text.length; i++) {
+                const char = text[i];
+
+                // 10% chance of making a typo
+                if (Math.random() < 0.10 && char !== ' ') {
+                    // Type wrong character
+                    const wrongChar = wrongChars[Math.floor(Math.random() * wrongChars.length)];
+                    tagline.textContent = tagline.textContent + wrongChar;
+                    await new Promise(resolve => setTimeout(resolve, randomDelay(80, 200)));
+
+                    // Pause (realizing the mistake)
+                    await new Promise(resolve => setTimeout(resolve, randomDelay(200, 400)));
+
+                    // Backspace the wrong character
+                    tagline.textContent = tagline.textContent.slice(0, -1);
+                    await new Promise(resolve => setTimeout(resolve, randomDelay(50, 120)));
+                }
+
+                // Type the correct character
                 tagline.textContent = tagline.textContent + char;
-                await new Promise(resolve => setTimeout(resolve, randomDelay(50, 150)));
+                await new Promise(resolve => setTimeout(resolve, randomDelay(80, 200)));
             }
         }
 
         async function backspaceText(length) {
             for (let i = 0; i < length; i++) {
                 tagline.textContent = tagline.textContent.slice(0, -1);
-                await new Promise(resolve => setTimeout(resolve, randomDelay(30, 80)));
+                await new Promise(resolve => setTimeout(resolve, randomDelay(50, 120)));
             }
         }
 
