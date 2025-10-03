@@ -19,6 +19,7 @@
             background: #0a0e27;
             color: #fff;
             overflow-x: hidden;
+            scroll-behavior: smooth;
         }
 
         .hero {
@@ -41,6 +42,7 @@
             background: radial-gradient(circle at 20% 50%, rgba(255, 103, 169, 0.15) 0%, transparent 50%),
                         radial-gradient(circle at 80% 80%, rgba(122, 245, 238, 0.15) 0%, transparent 50%);
             pointer-events: none;
+            animation: gradientShift 15s ease-in-out infinite;
         }
 
         .container {
@@ -56,6 +58,7 @@
             max-width: 900px;
             margin: 0 auto;
             animation: fadeInUp 1s ease-out;
+            perspective: 1000px;
         }
 
         .logo-section {
@@ -79,6 +82,7 @@
             font-family: 'VT323', monospace;
             color: #7af5ee;
             text-shadow: 0 0 10px rgba(122, 245, 238, 0.5);
+	    max-height: 3rem;
         }
 
         .hero-tagline::after {
@@ -151,9 +155,13 @@
             border-radius: 24px;
             padding: 3rem;
             border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: all 0.4s ease;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
             position: relative;
             overflow: hidden;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            cursor: pointer;
         }
 
         .feature-card::before {
@@ -169,9 +177,27 @@
         }
 
         .feature-card:hover {
-            transform: translateY(-10px);
+            transform: translateY(-10px) scale(1.02);
             border-color: rgba(255, 103, 169, 0.3);
             box-shadow: 0 20px 60px rgba(255, 103, 169, 0.2);
+        }
+
+        .feature-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 103, 169, 0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.6s ease;
+            opacity: 0;
+        }
+
+        .feature-card:hover::after {
+            opacity: 1;
+            animation: shimmer 1.5s ease-in-out;
         }
 
         .feature-card:hover::before {
@@ -224,7 +250,7 @@
             text-decoration: none;
             color: #fff;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             font-weight: 600;
             font-size: 1.1rem;
             text-align: center;
@@ -234,7 +260,7 @@
         .social-link:hover {
             background: rgba(255, 103, 169, 0.15);
             border-color: rgba(255, 103, 169, 0.4);
-            transform: translateY(-5px);
+            transform: translateY(-5px) scale(1.05);
             box-shadow: 0 10px 30px rgba(255, 103, 169, 0.3);
         }
 
@@ -302,11 +328,31 @@
         }
 
         @keyframes float {
-            0%, 100% { 
+            0%, 100% {
                 transform: translateY(0px);
             }
-            50% { 
+            50% {
                 transform: translateY(-20px);
+            }
+        }
+
+        @keyframes gradientShift {
+            0%, 100% {
+                background-position: 0% 50%;
+                opacity: 1;
+            }
+            50% {
+                background-position: 100% 50%;
+                opacity: 0.8;
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                left: -100%;
+            }
+            100% {
+                left: 100%;
             }
         }
 
@@ -317,6 +363,7 @@
 
             .hero-tagline {
                 font-size: 1.4rem;
+		max-height: 2rem;
             }
 
             .features-grid {
@@ -365,47 +412,40 @@
 
     <section class="features-section">
         <div class="features-grid">
-            <div class="feature-card">
-                <span class="feature-icon">🎙️</span>
-                <h3 class="feature-title">Aktuella nyheter</h3>
-                <p class="feature-description">Vi håller dig uppdaterad med de senaste händelserna inom open source, Linux och digital integritet. Varje vecka djupdyker vi i de mest intressanta nyheterna.</p>
-            </div>
+            <a href="https://liberapay.com/TrevligMjukvara/donate" target="_blank" class="feature-card">
+                <span class="feature-icon">❤️</span>
+                <h3 class="feature-title">Stöd podden</h3>
+                <p class="feature-description">Hjälp oss att fortsätta skapa innehåll. Ditt stöd värmer och bidrar till att hålla nere kostnaderna.</p>
+            </a>
 
-            <div class="feature-card">
-                <span class="feature-icon">💡</span>
-                <h3 class="feature-title">Djupgående analyser</h3>
-                <p class="feature-description">Vi går bortom rubrikerna och ger dig riktiga insikter. Från tekniska genomgångar till diskussioner om öppen källkods framtid och betydelse för samhället.</p>
-            </div>
+            <a href="https://fikaverse.club/@trevligmjukvara" target="_blank" class="feature-card">
+                <span class="feature-icon">🐘</span>
+                <h3 class="feature-title">Följ oss på Mastodon</h3>
+                <p class="feature-description">Häng mé i vårt community på det fria och decentraliserade sociala nätverket. Diskutera avsnitten, rösta på titlar och var en del av konversationen.</p>
+            </a>
 
-            <div class="feature-card">
-                <span class="feature-icon">🌍</span>
-                <h3 class="feature-title">Community först</h3>
-                <p class="feature-description">Trevlig Mjukvara är en del av den globala open source-rörelsen. Vi delar era värderingar om transparens, frihet och samarbete.</p>
-            </div>
+
+            <a href="https://twitter.com/trevligmjukvara" target="_blank" class="feature-card">
+                <span class="feature-icon">🐦</span>
+                <h3 class="feature-title">Hitta oss på X</h3>
+                <p class="feature-description">Följ våra uppdateringar och nyheter på X. Länkar till nya avsnitt och annat utlovas.</p>
+            </a>
         </div>
     </section>
 
     <section class="social-section">
-        <h2 class="social-title">Följ oss överallt</h2>
+        <h2 class="social-title">Häng mé här också</h2>
         <div class="social-grid">
             <a href="https://www.youtube.com/channel/UCRVmpkj-XM6UhUCjGiL3hhQ" target="_blank" class="social-link">YouTube</a>
-            <a href="https://twitter.com/trevligmjukvara" target="_blank" class="social-link">Twitter</a>
-            <a href="https://fikaverse.club/@trevligmjukvara" target="_blank" class="social-link">Mastodon</a>
             <a href="https://t.me/trevligmjukvara" target="_blank" class="social-link">Telegram</a>
             <a href="https://matrix.to/#/%23TrevligMjukvara:matrix.org" target="_blank" class="social-link">Matrix</a>
             <a href="https://github.com/trevligmjukvara" target="_blank" class="social-link">GitHub</a>
             <a href="mailto:kontakt@trevligmjukvara.se" class="social-link">Email</a>
-            <a href="https://liberapay.com/TrevligMjukvara/donate" target="_blank" class="social-link">Stöd oss</a>
         </div>
     </section>
 
     <footer>
         <div class="footer-content">
-            <div class="footer-links">
-                <a href="mailto:kontakt@trevligmjukvara.se" class="footer-link">Kontakt</a>
-                <a href="https://liberapay.com/TrevligMjukvara/donate" target="_blank" class="footer-link">Donera</a>
-                <a href="https://github.com/trevligmjukvara" target="_blank" class="footer-link">GitHub</a>
-            </div>
             <div class="footer-credits">
                 <p>Musik från <a href="https://filmmusic.io" target="_blank">filmmusic.io</a> • Ljudeffekter från <a href="https://www.zapsplat.com/" target="_blank">zapsplat.com</a></p>
                 <p style="margin-top: 0.5rem;">OK-emoji från emojione (CC BY 4.0) • Font: Sulphur Point (OFL)</p>
@@ -417,11 +457,29 @@
         const phrases = [
             'fri mjukvara och öppen källkod',
             'Linux',
+	    'kod, kultur och konsten att skeppa',
+	    'varför det där mötet borde varit en pull request',
+	    'teknisk skuld som en strategisk tillgång',
             'privacy',
+	    'att bygga saker som faktiskt används',
             'teknologi som respekterar dig',
+	    'färre möten och mer flow',
             'det fria internet',
             'open source-communityn',
-            'digital integritet'
+	    'att skriva en rad kod...',
+	    'tusen rader kod...',
+	    'rätt rad kod.',
+            'digital integritet',
+	    'att äntligen lyckas stänga vim',
+	    'när story points bara är astrologi',
+	    'att överleva ännu en omorganisation',
+	    'att vara en EM och en Staff Eng...',
+	    'en terapeut och en framtidsspanare.',
+	    'synergi-effekter och annat enterprise speak',
+	    'att skeppa kod snabbare än byråkratin hinner med',
+	    'Sebs magnifika skägg',
+	    'den oslagbara glädjen i att radera kod',
+	    'att översätta Jira till verklighet',
         ];
 
         const tagline = document.getElementById('tagline');
